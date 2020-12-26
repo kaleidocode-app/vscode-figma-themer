@@ -1,4 +1,4 @@
-figma.showUI(__html__, { width: 350, height: 280 });
+figma.showUI(__html__, { width: 400, height: 300 });
 
 let theme = [] as any
 let index = [] as any
