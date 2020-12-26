@@ -2,32 +2,46 @@ figma.showUI(__html__, { width: 400, height: 300 });
 
 let theme = [] as any
 let index = [] as any
+let selection = figma.currentPage.selection
 
-for (let n of figma.currentPage.selection) {
-  if (n.type === 'FRAME') {
+if (selection.length > 0) {
 
-    // grab all token children
-    let children = n.findChildren(n => n.name.startsWith('$'))
+  for (let n of selection) {
+    if (n.type === 'FRAME') {
+  
+      // grab all token children
+      let children = n.findChildren(n => n.name.startsWith('$'))
+  
+      children.forEach(c => {
+        let node = c as VectorNode
+  
+        let colorName: string = node.name.substring(1);
+        let colors = node.fills[0].color
+        let colorHex = findTheHEX(colors.r, colors.g, colors.b)
+  
+        if (index.includes(colorName) === false) {
+          index.push(colorName)
+          theme.push({
+            [colorName]: '#' + colorHex
+          });
+        };
+  
+  
+      })
+  
+      // post in UI
+      figma.ui.postMessage({ type: 'loadStyles', theme: [theme] })
+    }
+  }
 
-    children.forEach(c => {
-      let node = c as VectorNode
+} else {
+  figma.ui.postMessage({ type: 'empty', theme: [theme] })
+}
 
-      let colorName: string = node.name.substring(1);
-      let colors = node.fills[0].color
-      let colorHex = findTheHEX(colors.r, colors.g, colors.b)
+figma.ui.onmessage = async msg => {
 
-      if (index.includes(colorName) === false) {
-        index.push(colorName)
-        theme.push({
-          [colorName]: '#' + colorHex
-        });
-      };
-
-
-    })
-
-    // post in UI
-    figma.ui.postMessage({ type: 'loadStyles', theme: [theme] })
+  if (msg.type === "close") {
+    figma.closePlugin();
   }
 }
 

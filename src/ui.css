@@ -22,6 +22,10 @@ body {
   font-family: Inter, Roboto, sans-serif;
 }
 
+h1 {
+  font-size: 16px;
+}
+
 input:not([type='checkbox']) {
   width: calc(100% - (var(--padding)*2));
   height: 28px;
@@ -110,4 +114,14 @@ textarea {
   font-size: 12px;
   padding: 12px;
   margin-bottom: 12px;
+}
+
+#container.empty #empty {
+  display: inline;
+}
+
+#empty,
+#container.empty  textarea,
+#container.empty  button#copy{
+  display: none;
 }

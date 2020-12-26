@@ -1,14 +1,16 @@
 import './ui.css'
 
+let container = <HTMLElement>document.getElementById('container');
 let copyButton = <HTMLInputElement>document.getElementById('copy')
+let closeButton = <HTMLInputElement>document.getElementById('close')
 let themeCode = <HTMLTextAreaElement>document.getElementById('theme')
 
 onmessage = (event) => {
-    const pluginMessage = event.data.pluginMessage
+    const message = event.data.pluginMessage
 
-    if (pluginMessage.type == 'loadStyles') {
+    if (message.type == 'loadStyles') {
 
-        let theme = pluginMessage.theme[0]
+        let theme = message.theme[0]
         let code = ''
 
         theme.forEach(token => {
@@ -22,9 +24,16 @@ onmessage = (event) => {
 
         themeCode.value = wrap
     }
+    else if (message.type === 'empty') {
+        container.classList.add('empty');
+    }
 }
 
 copyButton.onclick = () => {
     themeCode.select();
     document.execCommand('copy');
+}
+
+closeButton.onclick = () => {
+    parent.postMessage({ pluginMessage: { type: 'close' } }, '*')
 }
