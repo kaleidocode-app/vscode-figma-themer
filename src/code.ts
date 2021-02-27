@@ -6,33 +6,31 @@ let selection = figma.currentPage.selection
 
 if (selection.length > 0) {
 
-  for (let n of selection) {
-    if (n.type === 'FRAME') {
+
+  for (let node of selection) {
+
+    console.log(node.name)
+
+    if (node.type === 'RECTANGLE' && node.name.startsWith('$')) {
   
       // grab all token children
-      let children = n.findChildren(n => n.name.startsWith('$'))
-  
-      children.forEach(c => {
-        let node = c as VectorNode
-  
-        let colorName: string = node.name.substring(1);
-        let colors = node.fills[0].color
-        let colorHex = findTheHEX(colors.r, colors.g, colors.b)
-  
-        if (index.includes(colorName) === false) {
-          index.push(colorName)
-          theme.push({
-            [colorName]: '#' + colorHex
-          });
-        };
-  
-  
-      })
-  
-      // post in UI
-      figma.ui.postMessage({ type: 'loadStyles', theme: [theme] })
+      let colorName: string = node.name.substring(1);
+      let colors = node.fills[0].color
+      let colorHex = findTheHEX(colors.r, colors.g, colors.b)
+
+      if (index.includes(colorName) === false) {
+        index.push(colorName)
+        theme.push({
+          [colorName]: '#' + colorHex
+        });
+      };
+
     }
   }
+
+  // post in UI
+  console.log(theme)
+  figma.ui.postMessage({ type: 'loadStyles', theme: [theme] })
 
 } else {
   figma.ui.postMessage({ type: 'empty', theme: [theme] })
