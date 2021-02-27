@@ -3,7 +3,7 @@ import './ui.css'
 let container = <HTMLElement>document.getElementById('container');
 let copyButton = <HTMLInputElement>document.getElementById('copy')
 let closeButton = <HTMLInputElement>document.getElementById('close')
-let themeCode = <HTMLTextAreaElement>document.getElementById('theme')
+let themeTextBox = <HTMLTextAreaElement>document.getElementById('theme')
 
 onmessage = (event) => {
     const message = event.data.pluginMessage
@@ -11,7 +11,8 @@ onmessage = (event) => {
     if (message.type == 'loadStyles') {
 
         let theme = message.theme[0]
-        let code = ''
+        let themeColors = ''
+        let tokenColors = ''
 
         // define colors
         let theme1 = Object.values(theme[0]).toString()
@@ -23,7 +24,12 @@ onmessage = (event) => {
         let theme7 = Object.values(theme[6]).toString()
         let theme8 = Object.values(theme[7]).toString()
         let theme9 = Object.values(theme[8]).toString()
-        // let theme10 = Object.values(theme[9]).toString()
+        
+        let theme10 = Object.values(theme[9]).toString()
+        let theme11 = Object.values(theme[10]).toString()
+        let theme12 = Object.values(theme[11]).toString()
+        let theme13 = Object.values(theme[12]).toString()
+        let theme14 = Object.values(theme[13]).toString()
 
         // theme1
         let theme1Colors = [
@@ -37,7 +43,7 @@ onmessage = (event) => {
             'titleBar.border',
         ]
         theme1Colors.forEach(token => {
-            code += `    "${token}": "${theme1}",\n`
+            themeColors += `    "${token}": "${theme1}",\n`
         })
 
         // theme2
@@ -50,7 +56,7 @@ onmessage = (event) => {
             'panel.background',
         ]
         theme2Colors.forEach(token => {
-            code += `    "${token}": "${theme2}",\n`
+            themeColors += `    "${token}": "${theme2}",\n`
         })
 
         // theme3
@@ -65,7 +71,7 @@ onmessage = (event) => {
             'list.hoverBackground',
         ]
         theme3Colors.forEach(token => {
-            code += `    "${token}": "${theme3}",\n`
+            themeColors += `    "${token}": "${theme3}",\n`
         })
 
         // theme4
@@ -76,7 +82,7 @@ onmessage = (event) => {
             'input.background',
         ]
         theme4Colors.forEach(token => {
-            code += `    "${token}": "${theme4}",\n`
+            themeColors += `    "${token}": "${theme4}",\n`
         })
 
         // theme5
@@ -85,7 +91,7 @@ onmessage = (event) => {
             'activityBar.inactiveForeground',
         ]
         theme5Colors.forEach(token => {
-            code += `    "${token}": "${theme5}",\n`
+            themeColors += `    "${token}": "${theme5}",\n`
         })
 
         // theme6
@@ -94,7 +100,7 @@ onmessage = (event) => {
             'panelTitle.inactiveForeground',
         ]
         theme6Colors.forEach(token => {
-            code += `    "${token}": "${theme6}",\n`
+            themeColors += `    "${token}": "${theme6}",\n`
         })
 
         // theme7
@@ -116,7 +122,7 @@ onmessage = (event) => {
             'titleBar.activeForeground',
         ]
         theme7Colors.forEach(token => {
-            code += `    "${token}": "${theme7}",\n`
+            themeColors += `    "${token}": "${theme7}",\n`
         })
 
         // theme8
@@ -131,7 +137,7 @@ onmessage = (event) => {
             'statusBar.debuggingBackground',
         ]
         theme8Colors.forEach(token => {
-            code += `    "${token}": "${theme8}",\n`
+            themeColors += `    "${token}": "${theme8}",\n`
         })
 
         // theme9
@@ -140,23 +146,94 @@ onmessage = (event) => {
             'textLink.activeForeground',
         ]
         theme9Colors.forEach(token => {
-            code += `    "${token}": "${theme9}",\n`
+            themeColors += `    "${token}": "${theme9}",\n`
         })
 
-        // theme10
-        // let theme10Colors = [
-        //     'activityBar.activeBorder',
-        //     'tab.activeBorderTop',
-        //     'panelTitle.activeBorder',
-        //     'statusBar.debuggingBackground',
-        // ]
-        // theme10Colors.forEach(token => {
-        //     code += `    "${token}": "${theme10}",\n`
-        // })
+        
+
+        let theme10Colors = `{
+                "scope": [
+                    "comment",
+                    "punctuation.definition.comment",
+                    "string.comment"
+                ],
+                "settings": {
+                    "foreground": "${theme10}"
+                }
+            },\n`
+        tokenColors += theme10Colors
+
+
+        let theme11Colors = `{
+                "scope": [
+                    "keyword",
+                    "keyword.control",
+                    "storage",
+                    "storage.type"
+                ],
+                "settings": {
+                    "foreground": "${theme11}"
+                }
+            },\n`
+        tokenColors += theme11Colors
+
+
+        let theme12Colors = `{
+                "scope": [
+                    "string",
+                    "punctuation.definition.string",
+                    "string punctuation.section.embedded source"
+                ],
+                "settings": {
+                    "foreground": "${theme12}"
+                }
+            },\n`
+        tokenColors += theme12Colors
+
+
+        let theme13Colors = `{
+                "scope": [
+                    "string.regexp constant.character.escape",
+                    "markup.quote",
+                    "entity.name.tag",
+                    "markup.inserted",
+                    "meta.diff.header.to-file",
+                    "punctuation.definition.inserted"
+                ],
+                "settings": {
+                    "foreground": "${theme13}"
+                }
+            },\n`
+        tokenColors += theme13Colors
+
+
+        let theme14Colors = `{
+                "scope": [
+                    "meta.diff.range",
+                    "entity",
+                    "entity.name",
+                    "entity.name.function",
+                    "meta.definition.function",
+                    "meta.function",
+                    "source",
+                ],
+                "settings": {
+                    "foreground": "${theme14}"
+                }
+            },\n`
+        tokenColors += theme14Colors
+        
 
         // combine
-        let wrap = `"workbench.colorCustomizations": {\n${code}\n}`
-        themeCode.value = wrap
+        let colorCustomizations = `"workbench.colorCustomizations": {\n${themeColors}\n},\n`
+        let tokenColorCustomizations = `"editor.tokenColorCustomizations": {
+            "textMateRules": [
+                ${tokenColors}
+            ],
+        },`
+        themeTextBox.value = colorCustomizations + tokenColorCustomizations
+
+
     }
     else if (message.type === 'empty') {
         container.classList.add('empty');
@@ -164,7 +241,7 @@ onmessage = (event) => {
 }
 
 copyButton.onclick = () => {
-    themeCode.select();
+    themeTextBox.select();
     document.execCommand('copy');
 }
 
